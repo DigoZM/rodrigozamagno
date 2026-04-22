@@ -109,11 +109,27 @@ footer{text-align:center;padding:1.5rem;font-family:"DM Mono",monospace;font-siz
   .row{grid-template-columns:1fr}.ry{display:none}
   .dig,.rg{grid-template-columns:1fr}.nl{gap:1rem}
 }
+#back-btn {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--mu);
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: DM Sans, sans-serif;
+  transition: color .2s;
+  margin-right: auto;
+  margin-left: 2.5rem;
+}
+#back-btn:hover { color: var(--tx); }
 </style>
 </head>
 <body>
 <nav>
   <span class="nn" onclick="show('home')">rzm</span>
+  <button id="back-btn" onclick="show('home')">← Back to projects</button>
   <div class="nl">
     <a onclick="show('home');go('education')">Education</a>
     <a onclick="show('home');go('experience')">Experience</a>
@@ -259,7 +275,7 @@ footer{text-align:center;padding:1.5rem;font-family:"DM Mono",monospace;font-siz
 <div id="p-orchard" class="page">
   <div class="dh">
     <div class="di">
-      <button class="bb" onclick="show('home')">← Back to projects</button>
+      
       <div class="dk">2025 · Master's Thesis · University of South-Eastern Norway</div>
       <h1><strong>Drone-Assisted</strong><br>Orchard Monitoring</h1>
       <p class="ds">An autonomous UAV pipeline for orchard monitoring — built and validated in a digital twin of a real apple orchard using Unreal Engine and AirSim. Covers waypoint navigation, YOLOv7 apple detection, multi-object tracking, and georeferenced per-tree counting.</p>
@@ -332,7 +348,7 @@ footer{text-align:center;padding:1.5rem;font-family:"DM Mono",monospace;font-siz
 <div id="p-planet" class="page">
   <div class="dh">
     <div class="di">
-      <button class="bb" onclick="show('home')">← Back to projects</button>
+      
       <div class="dk">2022 · Bachelor's Thesis · Universidade de Brasília</div>
       <h1><strong>Reconfigurable</strong><br>Planetary System</h1>
       <p class="ds">A modular mechanical orrery where each planet's translation, rotation, axial tilt, and satellite orbit can be studied independently — designed for STEAM education, with mathematically scaled dimensions and orbital periods.</p>
@@ -407,7 +423,7 @@ footer{text-align:center;padding:1.5rem;font-family:"DM Mono",monospace;font-siz
 <div id="p-vitacheck" class="page">
 <div class="dh">
   <div class="di">
-    <button class="bb" onclick="show('home')">← Back to projects</button>
+    
     <div class="dk">2024–2025 · Erasmus Mundus Master · SSIS Programme</div>
     <h1><strong>Vitacheck</strong><br>Parkinson's Early Detection</h1>
     <p class="ds">A sensor-based health monitoring prototype using grip strength and finger-tapping tests — two validated clinical assessments — to detect early signs of Parkinson's disease.</p>
@@ -442,7 +458,7 @@ footer{text-align:center;padding:1.5rem;font-family:"DM Mono",monospace;font-siz
 <div id="p-datalake" class="page">
 <div class="dh">
   <div class="di">
-    <button class="bb" onclick="show('home')">← Back to projects</button>
+    
     <div class="dk">2022–2024 · Data Engineer · AKAD Seguros</div>
     <h1><strong>Transactional Data Lake</strong><br>on AWS</h1>
     <p class="ds">Three-layer data lake integrating 6 heterogeneous data sources, processing 100+ GB of insurance data — featured in an official AWS Brazil publication.</p>
@@ -479,7 +495,7 @@ footer{text-align:center;padding:1.5rem;font-family:"DM Mono",monospace;font-siz
 <div id="p-robot" class="page">
 <div class="dh">
   <div class="di">
-    <button class="bb" onclick="show('home')">← Back to projects</button>
+    
     <div class="dk">2019 · Trinity College Int'l Firefighting Home Robot Contest</div>
     <h1><strong>Firefighting</strong><br>Autonomous Robot</h1>
     <p class="ds">An autonomous robot that navigates a maze-like arena, detects a live candle flame, and extinguishes it — built for the Trinity College International Firefighting Home Robot Contest.</p>
@@ -512,10 +528,26 @@ footer{text-align:center;padding:1.5rem;font-family:"DM Mono",monospace;font-siz
 </div>
 
 <script>
-function show(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  var el=document.getElementById('p-'+id);
-  if(el){el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+let savedScrollY = 0;
+
+function show(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('p-' + id);
+  if (!el) return;
+  el.classList.add('active');
+
+  const backBtn = document.getElementById('back-btn');
+
+  if (id === 'home') {
+    backBtn.style.display = 'none';
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: savedScrollY, behavior: 'smooth' });
+    });
+  } else {
+    savedScrollY = window.scrollY;
+    backBtn.style.display = 'flex';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 function go(id){
   setTimeout(function(){
